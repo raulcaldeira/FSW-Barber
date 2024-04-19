@@ -1,10 +1,8 @@
 import SideMenu from "@/app/_components/side-menu";
 import { Button } from "@/app/_components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/app/_components/ui/sheet";
 import { Barbershop } from "@prisma/client";
 import {
   ChevronLeftIcon,
-  MapPin,
   MapPinIcon,
   MenuIcon,
   StarIcon,
@@ -20,15 +18,16 @@ const BarbershopInfo = ({ barbershop }: BarbershopInfoProps) => {
   return (
     <>
       <div className="h-[250px] w-full relative">
-        <Link href={"/"}>
-          <Button
-            size="icon"
-            variant="outline"
-            className="z-50 absolute top-4 left-4 rounded-full"
-          >
+        <Button
+          size="icon"
+          variant="outline"
+          className="z-50 absolute top-4 left-4 rounded-full"
+          asChild
+        >
+          <Link href={"/"}>
             <ChevronLeftIcon />
-          </Button>
-        </Link>
+          </Link>
+        </Button>
 
         <SideMenu>
           <Button

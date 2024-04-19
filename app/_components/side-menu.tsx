@@ -4,7 +4,6 @@ import {
   HomeIcon,
   LogInIcon,
   LogOutIcon,
-  MenuIcon,
   UserIcon,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
