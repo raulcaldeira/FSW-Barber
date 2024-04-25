@@ -29,7 +29,7 @@ async function Home() {
 
       <div className="px-5 mt-6">
         <h2 className="mb-3 text-xs uppercase text-gray-400 font-bold">Agendamentos</h2>
-        <BookingItem />
+        {/* <BookingItem /> */}
       </div>
 
       <div className="mt-6">
