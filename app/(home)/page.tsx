@@ -29,12 +29,18 @@ export default async function Home() {
       : Promise.resolve([]),
   ]);
 
+  const firstNameUser = session?.user?.name?.split(" ")[0];
+
   return (
     <div>
       <Header />
 
       <div className="px-5 pt-5">
-        <h2 className="text-xl font-bold">Olá, Miguel!</h2>
+        {session?.user ? (
+          <h2 className="text-xl font-bold">Olá, {firstNameUser}!</h2>
+        ) : (
+          <h2 className="text-xl font-bold">Olá, seja bem-vindo!</h2>
+        )}
         <p className="capitalize text-sm">
           {format(new Date(), "EEEE',' dd 'de' MMMM", {
             locale: ptBR,
