@@ -17,7 +17,16 @@ import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { generateDayTimeList } from "../_helpers/hours";
-import { format, formatISO, setHours, setMinutes } from "date-fns";
+import {
+  differenceInMinutes,
+  format,
+  formatISO,
+  getHours,
+  getMinutes,
+  isToday,
+  setHours,
+  setMinutes,
+} from "date-fns";
 import { saveBooking } from "../_actions/save-booking";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -53,8 +62,6 @@ const ServiceItem = ({
     const refreshAvailableHours = async () => {
       const days = await getDayBookiungs(barbershop.id, date);
       setDayBookings(days);
-
-      console.log(days);
     };
 
     refreshAvailableHours();
@@ -74,9 +81,29 @@ const ServiceItem = ({
       return [];
     }
 
+    const currentDate = new Date();
+    const currentHour = getHours(currentDate);
+    const currentMinutes = getMinutes(currentDate);
+
+    const isTodayDate = isToday(date);
+
+    console.log(`Horário atual: ${currentHour} e ${currentMinutes}`);
+
     return generateDayTimeList(date).filter((time) => {
       const timeHour = Number(time.split(":")[0]);
       const timeMinutes = Number(time.split(":")[1]);
+
+      const bookingDate = new Date(date).setHours(timeHour, timeMinutes);
+
+      if (
+        isTodayDate &&
+        (timeHour < currentHour ||
+          (timeHour === currentHour && timeMinutes < currentMinutes))
+        ||
+        differenceInMinutes(bookingDate, currentDate) < 15
+      ) {
+        return false;
+      }
 
       const booking = dayBookings.find((booking) => {
         const bookingHour = booking.date.getHours();
