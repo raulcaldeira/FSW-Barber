@@ -12,7 +12,7 @@ interface BarbershopItemProps {
 
 const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
   return (
-    <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
+    <Card className="min-w-full max-w-full rounded-2xl">
       <CardContent className="px-1 py-0">
         <div className="w-full h-[159px] relative">
           <div className="absolute top-2 left-2 z-50">
@@ -41,7 +41,7 @@ const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
             {barbershop.address}
           </p>
           <Button className="w-full mt-3" variant="secondary" asChild>
-            <Link className="w-full mt-3" href={`barbershop/${barbershop.id}`}>
+            <Link className="w-full mt-3" href={`barbershops/${barbershop.id}`}>
               Reservar
             </Link>
           </Button>
