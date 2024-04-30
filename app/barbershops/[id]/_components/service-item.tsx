@@ -107,6 +107,10 @@ const ServiceItem = ({
           label: "Visualizar",
           onClick: () => router.push("/bookings"),
         },
+        actionButtonStyle: {
+          background: "#8162FF",
+          color: "#FFFFFF",
+        },
       });
     } catch (error) {
       console.error(error);
