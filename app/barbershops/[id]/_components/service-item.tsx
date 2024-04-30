@@ -52,12 +52,16 @@ const ServiceItem = ({
     }
 
     const refreshAvailableHours = async () => {
-      const _dayBookings = await getDayBookings(barbershop.id, date);
+      const _dayBookings = await getDayBookings(
+        barbershop.id,
+        date,
+        (data?.user as any).id
+      );
       setDayBookings(_dayBookings);
     };
 
     refreshAvailableHours();
-  }, [date, barbershop.id]);
+  }, [date, barbershop.id, data?.user]);
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date);
@@ -135,11 +139,11 @@ const ServiceItem = ({
         return bookingHour === timeHour && bookingMinutes === timeMinutes;
       });
 
-      if (!booking) {
-        return true;
+      if (booking) {
+        return false;
       }
 
-      return false;
+      return true;
     });
   }, [date, dayBookings]);
 
