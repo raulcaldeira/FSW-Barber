@@ -11,7 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/app/_components/ui/sheet";
-import { Barbershop, Booking, Service } from "@prisma/client";
+import { Barbershop, Booking, Prisma, Service } from "@prisma/client";
 import { ptBR } from "date-fns/locale";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
@@ -26,7 +26,11 @@ import { getDayBookings } from "../_actions/get-bookings";
 import BookingInfo from "@/app/_components/booking-info";
 
 interface ServiceItemProps {
-  barbershop: Barbershop;
+  barbershop: Prisma.BarbershopGetPayload<{
+    include: {
+      working_days: true;
+    };
+  }>;
   service: Service;
   isAuthenticated: boolean;
 }
@@ -128,7 +132,7 @@ const ServiceItem = ({
       return [];
     }
 
-    return generateDayTimeList(date).filter((time) => {
+    return generateDayTimeList(barbershop, service, date).filter((time) => {
       const timeHour = Number(time.split(":")[0]);
       const timeMinutes = Number(time.split(":")[1]);
 
@@ -145,7 +149,19 @@ const ServiceItem = ({
 
       return true;
     });
-  }, [date, dayBookings]);
+  }, [service, barbershop, date, dayBookings]);
+
+  const isDayClosed = (calendarDate: Date | undefined) => {
+    if (!calendarDate) return true; // Se não houver data selecionada, o dia está fechado
+
+    // Obtém o dia da semana (0 para domingo, 1 para segunda-feira, etc.)
+    const weekDay = calendarDate.getDay();
+
+    // Verifica se o dia da semana está presente na lista de dias fechados da barbearia
+    return barbershop.working_days.some(
+      (day) => day.dayOfWeek === weekDay && !day.isOpen
+    );
+  };
 
   return (
     <Card>
@@ -190,7 +206,8 @@ const ServiceItem = ({
                       selected={date}
                       onSelect={handleDateClick}
                       locale={ptBR}
-                      fromDate={addDays(new Date(), 1)}
+                      fromDate={new Date()}
+                      disabled={isDayClosed}
                       styles={{
                         head_cell: {
                           width: "100%",

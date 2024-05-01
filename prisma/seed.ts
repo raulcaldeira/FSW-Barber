@@ -157,6 +157,7 @@ async function seedDatabase() {
             name: service.name,
             description: service.description,
             price: service.price,
+            duration: 45,
             imageUrl: service.imageUrl,
             barbershop: {
               connect: {
