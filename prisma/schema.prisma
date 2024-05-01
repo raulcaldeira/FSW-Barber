@@ -27,12 +27,17 @@ model User {
 }
 
 model Barbershop {
-  id       String    @id @default(uuid())
-  name     String
-  address  String
-  imageUrl String
-  services Service[]
-  bookings Booking[]
+  id             String    @id @default(uuid())
+  name           String
+  address        String
+  description    String
+  phoneNumberOne String
+  phoneNumberTwo String?
+  imageUrl       String
+  services       Service[]
+  bookings       Booking[]
+
+  @@map("barbershops")
 }
 
 model Service {
@@ -44,6 +49,8 @@ model Service {
   description  String
   bookings     Booking[]
   imageUrl     String
+
+  @@map("services")
 }
 
 model Booking {
@@ -55,6 +62,8 @@ model Booking {
   userId       String
   user         User       @relation(fields: [userId], references: [id])
   date         DateTime   @db.Timestamp
+
+  @@map("bookings")
 }
 
 // NEXT AUTH

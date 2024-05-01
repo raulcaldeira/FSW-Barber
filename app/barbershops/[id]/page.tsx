@@ -3,6 +3,7 @@ import BarbershopInfo from "./_components/barbershop-info";
 import ServiceItem from "./_components/service-item";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/_lib/auth";
+import { redirect } from "next/navigation";
 
 interface BarbershopDetailsPageProps {
   params: {
@@ -14,8 +15,7 @@ const BarbershopDetailsPage = async ({
   params,
 }: BarbershopDetailsPageProps) => {
   if (!params.id) {
-    // TODO: redirect to home page
-    return null;
+    return redirect("/");
   }
 
   const session = await getServerSession(authOptions);
@@ -30,8 +30,7 @@ const BarbershopDetailsPage = async ({
   });
 
   if (!barbershop) {
-    // TODO: redirect to home page
-    return null;
+    return redirect("/");
   }
 
   return (
