@@ -27,7 +27,7 @@ model User {
 }
 
 model Barbershop {
-  id             String    @id @default(uuid())
+  id             String       @id @default(uuid())
   name           String
   address        String
   description    String
@@ -36,8 +36,21 @@ model Barbershop {
   imageUrl       String
   services       Service[]
   bookings       Booking[]
+  working_days   WorkingDay[]
 
   @@map("barbershops")
+}
+
+model WorkingDay {
+  id           String     @id @default(uuid())
+  dayOfWeek    Int // Pode ser "Domingo", "Segunda-Feira", "Terça-Feira", etc.
+  isOpen       Boolean // Indica se o dia é aberto ou fechado
+  startTime    Int? // Hora de abertura
+  endTime      Int? // Hora de fechamento
+  barbershopId String // Chave estrangeira para a tabela Barbershop
+  barbershop   Barbershop @relation(fields: [barbershopId], references: [id])
+
+  @@map("working_days")
 }
 
 model Service {

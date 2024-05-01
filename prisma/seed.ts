@@ -114,12 +114,23 @@ async function seedDatabase() {
       },
     ];
 
-    // Criar 10 barbearias com nomes e endereços fictícios
+    // Horários de trabalho para cada barbearia
+    const commonWorkingDays = [
+      { dayOfWeek: 0, isOpen: false }, // Domingo
+      { dayOfWeek: 1, isOpen: true, startTime: 540, endTime: 1260 }, // Segunda-Feira
+      { dayOfWeek: 2, isOpen: true, startTime: 540, endTime: 1260 }, // Terça-Feira
+      { dayOfWeek: 3, isOpen: true, startTime: 540, endTime: 1260 }, // Quarta-Feira
+      { dayOfWeek: 4, isOpen: true, startTime: 540, endTime: 1260 }, // Quinta-Feira
+      { dayOfWeek: 5, isOpen: true, startTime: 540, endTime: 1260 }, // Sexta-Feira
+      { dayOfWeek: 6, isOpen: true, startTime: 540, endTime: 1260 }, // Sábado
+    ];
+
     for (let i = 0; i < 10; i++) {
       const name = creativeNames[i];
       const address = addresses[i];
       const imageUrl = images[i];
       const description = descriptions[i];
+      const workingDaysData = commonWorkingDays;
 
       const barbershop = await prisma.barbershop.create({
         data: {
@@ -129,6 +140,14 @@ async function seedDatabase() {
           phoneNumberOne: "(11) 98204-5108",
           phoneNumberTwo: "(11) 97504-4321",
           description,
+          working_days: {
+            create: workingDaysData.map((day) => ({
+              dayOfWeek: day.dayOfWeek,
+              isOpen: day.isOpen,
+              startTime: day.startTime,
+              endTime: day.endTime,
+            })),
+          },
         },
       });
 
@@ -149,7 +168,9 @@ async function seedDatabase() {
       }
     }
 
-    console.log("Barbearias e serviços criados com sucesso!");
+    console.log(
+      "Barbearias, serviços e horários de trabalho criados com sucesso!"
+    );
   } catch (error) {
     console.error("Erro ao criar as barbearias:", error);
   } finally {

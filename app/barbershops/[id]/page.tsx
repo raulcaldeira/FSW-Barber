@@ -22,6 +22,7 @@ const BarbershopDetailsPage = async ({
     },
     include: {
       services: true,
+      working_days: { orderBy: { dayOfWeek: "asc" } },
     },
   });
 

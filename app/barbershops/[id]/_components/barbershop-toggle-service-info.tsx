@@ -1,17 +1,18 @@
 "use client";
+
 import { Prisma } from "@prisma/client";
 import ServiceItem from "./service-item";
 import { useSession } from "next-auth/react";
 import { Button } from "@/app/_components/ui/button";
 import { useState } from "react";
 import PhoneCopy from "./phone-copy";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { convertMinuteToHour } from "../_helpers/hours";
 
 interface BarbershopToggleServiceInfoProps {
   barbershop: Prisma.BarbershopGetPayload<{
     include: {
       services: true;
+      working_days: true;
     };
   }>;
 }
@@ -20,31 +21,38 @@ const BarbershopToggleServiceInfo = ({
   barbershop,
 }: BarbershopToggleServiceInfoProps) => {
   const session = useSession();
-
   const [showServices, setShowServices] = useState(true);
 
-  const workingDays = {
-    Domingo: false,
-    "Segunda-Feira": false,
-    "Terça-Feira": true,
-    "Quarta-Feira": true,
-    "Quinta-Feira": true,
-    "Sexta-Feira": true,
-    Sábado: true,
-  };
+  const handleButtonClick = (showServices: boolean) => () =>
+    setShowServices(showServices);
+
+  const weekDays = [
+    "Domingo",
+    "Segunda-feira",
+    "Terça-feira",
+    "Quarta-feira",
+    "Quinta-feira",
+    "Sexta-feira",
+    "Sábado",
+  ];
+
+  const workingDays = [
+    ...barbershop.working_days.slice(1),
+    barbershop.working_days[0],
+  ];
 
   return (
     <>
       <div className="mt-6 pl-5 flex gap-2">
         <Button
           variant={showServices ? "default" : "outline"}
-          onClick={() => setShowServices(true)}
+          onClick={handleButtonClick(true)}
         >
           Serviços
         </Button>
         <Button
           variant={showServices ? "outline" : "default"}
-          onClick={() => setShowServices(false)}
+          onClick={handleButtonClick(false)}
         >
           Informações
         </Button>
@@ -69,22 +77,33 @@ const BarbershopToggleServiceInfo = ({
           </div>
 
           <div className="flex flex-col gap-3 pb-6 mb-6 border-b border-solid border-secondary">
-            <PhoneCopy phoneNumber={barbershop.phoneNumberOne} />
-
-            {barbershop.phoneNumberTwo && (
-              <PhoneCopy phoneNumber={barbershop.phoneNumberTwo} />
-            )}
+            {[barbershop.phoneNumberOne, barbershop.phoneNumberTwo]
+              .filter(Boolean)
+              .map((phoneNumber, index) => (
+                <PhoneCopy key={index} phoneNumber={phoneNumber!} />
+              ))}
           </div>
 
           <div className="mb-6 flex flex-col gap-2">
-            {Object.entries(workingDays).map((weekDay) => (
-              <div key={weekDay[0]} className="flex justify-between items-center">
-                <span className="text-sm text-gray-400">{weekDay[0]}</span>
-                <span className="text-sm">
-                  {weekDay[1] ? "09-00 - 21:00" : "Fechado"}
-                </span>
-              </div>
-            ))}
+            {workingDays.map((weekDay) => {
+              const startTime =
+                weekDay.startTime && convertMinuteToHour(weekDay.startTime);
+              const endTime =
+                weekDay.endTime && convertMinuteToHour(weekDay.endTime);
+              return (
+                <div
+                  key={weekDay.id}
+                  className="flex justify-between items-center"
+                >
+                  <span className="text-sm text-gray-400 capitalize">
+                    {weekDays[weekDay.dayOfWeek]}
+                  </span>
+                  <span className="text-sm">
+                    {weekDay.isOpen ? `${startTime} - ${endTime}` : "Fechado"}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
