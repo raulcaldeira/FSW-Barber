@@ -200,7 +200,7 @@ const ServiceItem = ({
                     <SheetTitle>Fazer Reserva</SheetTitle>
                   </SheetHeader>
 
-                  <div className="py-6">
+                  <div className="w-full py-6">
                     <Calendar
                       mode="single"
                       selected={date}

@@ -4,30 +4,40 @@ import { ptBR } from "date-fns/locale";
 import Search from "./_components/search";
 import BookingItem from "../_components/booking-item";
 import { db } from "../_lib/prisma";
-import BarbershopItem from "./_components/barbershop-item";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
+import Hero from "./_components/hero";
+import BarbershopCarousel from "./_components/barbershop-carousel";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
-  const [barbershops, confirmedBookings] = await Promise.all([
-    db.barbershop.findMany({}),
-    session?.user
-      ? db.booking.findMany({
-          where: {
-            userId: (session.user as any).id,
-            date: {
-              gte: new Date(),
+  const [barbershops, barbershopsMoreVisiteds, confirmedBookings] =
+    await Promise.all([
+      db.barbershop.findMany({}),
+      db.barbershop.findMany({
+        orderBy: {
+          bookings: {
+            _count: "desc",
+          },
+        },
+        take: 10,
+      }),
+      session?.user
+        ? db.booking.findMany({
+            where: {
+              userId: (session.user as any).id,
+              date: {
+                gte: new Date(),
+              },
             },
-          },
-          include: {
-            service: true,
-            barbershop: true,
-          },
-        })
-      : Promise.resolve([]),
-  ]);
+            include: {
+              service: true,
+              barbershop: true,
+            },
+          })
+        : Promise.resolve([]),
+    ]);
 
   const firstNameUser = session?.user?.name?.split(" ")[0];
 
@@ -35,63 +45,64 @@ export default async function Home() {
     <div>
       <Header />
 
-      <div className="px-5 pt-5">
-        {session?.user ? (
-          <h2 className="text-xl font-bold">Olá, {firstNameUser}!</h2>
-        ) : (
-          <h2 className="text-xl font-bold">Olá, seja bem-vindo!</h2>
-        )}
-        <p className="capitalize text-sm">
-          {format(new Date(), "EEEE',' dd 'de' MMMM", {
-            locale: ptBR,
-          })}
-        </p>
-      </div>
+      <section className="w-full hidden lg:block">
+        <Hero
+          hasSession={session ? true : false}
+          firstNameUser={firstNameUser ? firstNameUser : ""}
+          barbershops={barbershops}
+          confirmedBookings={confirmedBookings}
+        />
+      </section>
 
-      <div className="px-5 mt-6">
-        <Search />
-      </div>
+      <section className="lg:hidden">
+        <div className="px-5 pt-5">
+          {session?.user ? (
+            <h2 className="text-xl font-bold">Olá, {firstNameUser}!</h2>
+          ) : (
+            <h2 className="text-xl font-bold">Olá, seja bem-vindo!</h2>
+          )}
+          <p className="capitalize text-sm">
+            {format(new Date(), "EEEE',' dd 'de' MMMM", {
+              locale: ptBR,
+            })}
+          </p>
+        </div>
 
-      {confirmedBookings.length > 0 && (
-        <div className="mt-6">
-          <h2 className="pl-5 text-xs mb-3 uppercase text-gray-400 font-bold">
-            Agendamentos
-          </h2>
+        <div className="px-5 mt-6">
+          <Search />
+        </div>
 
-          <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-            {confirmedBookings.map((booking) => (
-              <BookingItem key={booking.id} booking={booking} />
-            ))}
+        {confirmedBookings.length > 0 && (
+          <div className="mt-6">
+            <h2 className="pl-5 text-xs mb-3 uppercase text-gray-400 font-bold">
+              Agendamentos
+            </h2>
+
+            <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              {confirmedBookings.map((booking) => (
+                <BookingItem key={booking.id} booking={booking} />
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <div className="mt-6">
-        <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">
-          Recomendados
-        </h2>
-
-        <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.map((barbershop) => (
-            <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
-              <BarbershopItem barbershop={barbershop} />
-            </div>
-          ))}
+        <div className="mt-6">
+          <BarbershopCarousel title="Recomendados" barbershops={barbershops} />
         </div>
+      </section>
+
+      <div className="lg:px-32 mt-6">
+        <BarbershopCarousel
+          title="Populares"
+          barbershops={barbershops.reverse()}
+        />
       </div>
 
-      <div className="mt-6 mb-[4.5rem]">
-        <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">
-          Populares
-        </h2>
-
-        <div className="flex px-5 gap-4 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {barbershops.reverse().map((barbershop) => (
-            <div key={barbershop.id} className="min-w-[167px] max-w-[167px]">
-              <BarbershopItem barbershop={barbershop} />
-            </div>
-          ))}
-        </div>
+      <div className="lg:px-32 mt-6">
+        <BarbershopCarousel
+          title="Mais visitados"
+          barbershops={barbershopsMoreVisiteds}
+        />
       </div>
     </div>
   );
