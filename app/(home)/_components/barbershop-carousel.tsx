@@ -1,5 +1,12 @@
 import { Barbershop } from "@prisma/client";
 import BarbershopItem from "./barbershop-item";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/app/_components/ui/carousel";
 
 interface BarbershopCarouselProps {
   title: string;
@@ -11,19 +18,24 @@ const BarbershopCarousel = ({
   barbershops,
 }: BarbershopCarouselProps) => {
   return (
-    <div>
-      <h2 className="px-5 text-xs lg:text-sm mb-3 uppercase text-gray-40 font-bold">
+    <Carousel opts={{ dragFree: true }}>
+      <h2 className="text-xs lg:text-sm mb-3 uppercase text-gray-40 font-bold">
         {title}
       </h2>
-
-      <div className="flex px-5 gap-4 lg:gap-5 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+    
+      <CarouselPrevious className="hidden lg:flex" />
+      <CarouselContent>
         {barbershops.map((barbershop) => (
-          <div key={barbershop.id} className="min-w-[167px] lg:min-w-[221px] max-w-[167px] lg:max-w-[221px]">
+          <CarouselItem
+            key={barbershop.id}
+            className="md:basis-1/2 lg:basis-1/3 min-w-[167px] lg:min-w-[221px] max-w-[167px] lg:max-w-[221px]"
+          >
             <BarbershopItem barbershop={barbershop} />
-          </div>
+          </CarouselItem>
         ))}
-      </div>
-    </div>
+      </CarouselContent>
+      <CarouselNext className="hidden lg:flex" />
+    </Carousel>
   );
 };
 

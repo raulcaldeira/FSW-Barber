@@ -5,6 +5,13 @@ import Search from "./search";
 import { Barbershop, Prisma } from "@prisma/client";
 import BarbershopCarousel from "./barbershop-carousel";
 import BookingItem from "@/app/_components/booking-item";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/app/_components/ui/carousel";
 
 interface HeroProps {
   hasSession: boolean;
@@ -51,20 +58,31 @@ const Hero = ({
         <Search />
 
         {hasSession && (
-          <div className="mt-6">
-            <h2 className="pl-5 text-xs mb-3 uppercase text-gray-400 font-bold">
+          <Carousel className="pl-5 mt-6">
+            <h2 className="text-xs mb-3 uppercase text-gray-400 font-bold">
               Agendamentos
             </h2>
 
-            <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+
+            <CarouselPrevious className="-left-8" />
+
+            <CarouselContent className="">
               {confirmedBookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
+                <CarouselItem key={booking.id}>
+                  <BookingItem booking={booking} />
+                </CarouselItem>
               ))}
-            </div>
-          </div>
+            </CarouselContent>
+
+            <CarouselNext />
+
+          </Carousel>
         )}
       </div>
-      <div className="flex-1 z-50" style={{ maxWidth: "calc(100% - 439px)" }}>
+      <div
+        className="pr-3 flex-1 z-50"
+        style={{ maxWidth: "calc(100% - 439px)" }}
+      >
         <BarbershopCarousel title="Recomendados" barbershops={barbershops} />
       </div>
     </div>

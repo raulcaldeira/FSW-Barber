@@ -8,6 +8,13 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
 import Hero from "./_components/hero";
 import BarbershopCarousel from "./_components/barbershop-carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../_components/ui/carousel";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -73,32 +80,34 @@ export default async function Home() {
         </div>
 
         {confirmedBookings.length > 0 && (
-          <div className="mt-6">
-            <h2 className="pl-5 text-xs mb-3 uppercase text-gray-400 font-bold">
+          <Carousel className="pl-5 mt-6">
+            <h2 className="text-xs mb-3 uppercase text-gray-400 font-bold">
               Agendamentos
             </h2>
 
-            <div className="px-5 flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+            <CarouselContent className="">
               {confirmedBookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
+                <CarouselItem key={booking.id}>
+                  <BookingItem booking={booking} />
+                </CarouselItem>
               ))}
-            </div>
-          </div>
+            </CarouselContent>
+          </Carousel>
         )}
 
-        <div className="mt-6">
+        <div className="px-5 mt-6">
           <BarbershopCarousel title="Recomendados" barbershops={barbershops} />
         </div>
       </section>
 
-      <div className="lg:px-32 mt-6">
+      <div className="px-5 lg:px-32 mt-6">
         <BarbershopCarousel
           title="Populares"
           barbershops={barbershops.reverse()}
         />
       </div>
 
-      <div className="lg:px-32 mt-6">
+      <div className="px-5 lg:px-32 mt-6">
         <BarbershopCarousel
           title="Mais visitados"
           barbershops={barbershopsMoreVisiteds}
