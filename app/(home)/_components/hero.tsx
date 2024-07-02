@@ -57,7 +57,7 @@ const Hero = ({
 
         <Search />
 
-        {hasSession && (
+        {hasSession && confirmedBookings.length > 0 && (
           <Carousel className="pl-5 mt-6">
             <h2 className="text-xs mb-3 uppercase text-gray-400 font-bold">
               Agendamentos

@@ -49,8 +49,8 @@ export default async function Home() {
   const firstNameUser = session?.user?.name?.split(" ")[0];
 
   return (
-    <div>
-      <Header />
+    <>
+      <Header searchIsShown={false} />
 
       <section className="w-full hidden lg:block">
         <Hero
@@ -113,6 +113,6 @@ export default async function Home() {
           barbershops={barbershopsMoreVisiteds}
         />
       </div>
-    </div>
+    </>
   );
 }

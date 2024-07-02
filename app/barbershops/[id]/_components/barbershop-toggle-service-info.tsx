@@ -7,6 +7,7 @@ import { Button } from "@/app/_components/ui/button";
 import { useState } from "react";
 import PhoneCopy from "./phone-copy";
 import { convertMinuteToHour } from "../_helpers/hours";
+import BarbershopTotalInfo from "./barbershop-card-total-info";
 
 interface BarbershopToggleServiceInfoProps {
   barbershop: Prisma.BarbershopGetPayload<{
@@ -70,42 +71,46 @@ const BarbershopToggleServiceInfo = ({
           ))}
         </div>
       ) : (
-        <div className="px-5 py-6 flex flex-col gap-4">
-          <div className="pb-6 mb-6 border-b border-solid border-secondary">
-            <h2 className="text-xs text-gray-400 uppercase">Sobre nós</h2>
-            <p className="mt-3 text-sm">{barbershop.description}</p>
-          </div>
+        //FIXME: remove this comment
+        // <div className="px-5 py-6 flex flex-col gap-4">
+        //   <div className="pb-6 mb-6 border-b border-solid border-secondary">
+        //     <h2 className="text-xs text-gray-400 uppercase">Sobre nós</h2>
+        //     <p className="mt-3 text-sm">{barbershop.description}</p>
+        //   </div>
 
-          <div className="flex flex-col gap-3 pb-6 mb-6 border-b border-solid border-secondary">
-            {[barbershop.phoneNumberOne, barbershop.phoneNumberTwo]
-              .filter(Boolean)
-              .map((phoneNumber, index) => (
-                <PhoneCopy key={index} phoneNumber={phoneNumber!} />
-              ))}
-          </div>
+        //   <div className="flex flex-col gap-3 pb-6 mb-6 border-b border-solid border-secondary">
+        //     {[barbershop.phoneNumberOne, barbershop.phoneNumberTwo]
+        //       .filter(Boolean)
+        //       .map((phoneNumber, index) => (
+        //         <PhoneCopy key={index} phoneNumber={phoneNumber!} />
+        //       ))}
+        //   </div>
 
-          <div className="mb-6 flex flex-col gap-2">
-            {workingDays.map((weekDay) => {
-              const startTime =
-                weekDay.startTime && convertMinuteToHour(weekDay.startTime);
-              const endTime =
-                weekDay.endTime && convertMinuteToHour(weekDay.endTime);
-              return (
-                <div
-                  key={weekDay.id}
-                  className="flex justify-between items-center"
-                >
-                  <span className="text-sm text-gray-400 capitalize">
-                    {weekDays[weekDay.dayOfWeek]}
-                  </span>
-                  <span className="text-sm">
-                    {weekDay.isOpen ? `${startTime} - ${endTime}` : "Fechado"}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        //   <div className="mb-6 flex flex-col gap-2">
+        //     {workingDays.map((weekDay) => {
+        //       const startTime =
+        //         weekDay.startTime && convertMinuteToHour(weekDay.startTime);
+        //       const endTime =
+        //         weekDay.endTime && convertMinuteToHour(weekDay.endTime);
+        //       return (
+        //         <div
+        //           key={weekDay.id}
+        //           className="flex justify-between items-center"
+        //         >
+        //           <span className="text-sm text-gray-400 capitalize">
+        //             {weekDays[weekDay.dayOfWeek]}
+        //           </span>
+        //           <span className="text-sm">
+        //             {weekDay.isOpen ? `${startTime} - ${endTime}` : "Fechado"}
+        //           </span>
+        //         </div>
+        //       );
+        //     })}
+        //   </div>
+        // </div>
+
+        // ------------
+        <BarbershopTotalInfo barbershop={barbershop}/>
       )}
     </>
   );

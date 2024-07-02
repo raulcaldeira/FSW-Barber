@@ -1,7 +1,8 @@
 import { db } from "@/app/_lib/prisma";
-import BarbershopInfo from "./_components/barbershop-info";
 import { redirect } from "next/navigation";
-import BarbershopToggleServiceInfo from "./_components/barbershop-toggle-service-info";
+import Header from "@/app/_components/header";
+import MobileLayout from "./_components/mobile-layout";
+import DesktopLayout from "./_components/desktop-layout";
 
 interface BarbershopDetailsPageProps {
   params: {
@@ -31,11 +32,17 @@ const BarbershopDetailsPage = async ({
   }
 
   return (
-    <div>
-      <BarbershopInfo barbershop={barbershop} />
-
-      <BarbershopToggleServiceInfo barbershop={barbershop} />
-    </div>
+    <>
+      <Header className="hidden lg:block" />
+      <section>
+        <div className="hidden lg:block">
+          <DesktopLayout barbershop={barbershop} />
+        </div>
+        <div className="lg:hidden">
+          <MobileLayout barbershop={barbershop} />
+        </div>
+      </section>
+    </>
   );
 };
 

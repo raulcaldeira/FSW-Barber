@@ -10,11 +10,17 @@ import { useRouter, usePathname } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Search from "../(home)/_components/search";
+import clsx from "clsx";
 
-const Header = () => {
+interface HeaderProps {
+  className?: string;
+  searchIsShown?: boolean;
+}
+
+const Header = ({ className, searchIsShown = true }: HeaderProps) => {
   const { data } = useSession();
   const router = useRouter();
-  const currentRoute = usePathname()
+  const currentRoute = usePathname();
 
   function handleClickBookingsButton() {
     router.push("/bookings");
@@ -25,7 +31,7 @@ const Header = () => {
   }
 
   return (
-    <header>
+    <header className={clsx(className)}>
       <Card>
         <CardContent className="p-5 lg:px-32 lg:gap-11 justify-between flex flex-row items-center">
           <Link href="/">
@@ -38,9 +44,8 @@ const Header = () => {
             </Button>
           </SideMenu>
 
-
-          {currentRoute !== '/' && (
-            <div className="flex-1 max-w-[935px]">
+          {searchIsShown && (
+            <div className="hidden lg:block flex-1 max-w-[935px]">
               <Search />
             </div>
           )}
