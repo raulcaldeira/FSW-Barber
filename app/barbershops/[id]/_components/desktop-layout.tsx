@@ -6,6 +6,7 @@ import ServiceItem from "./service-item";
 import { getServerSession, Session } from "next-auth";
 import { Avatar, AvatarImage } from "@/app/_components/ui/avatar";
 import BarbershopTotalInfo from "./barbershop-card-total-info";
+import { authOptions } from "@/app/_lib/auth";
 
 interface MobileLayoutProps {
   barbershop: Prisma.BarbershopGetPayload<{
@@ -23,7 +24,7 @@ interface ServerSessionWithStatus extends Session {
 }
 
 const DesktopLayout = async ({ barbershop }: MobileLayoutProps) => {
-  const session = (await getServerSession()) as ServerSessionWithStatus;
+  const session = await getServerSession(authOptions);
 
   return (
     <section className="mt-10 px-32 flex justify-center gap-10">
@@ -64,7 +65,7 @@ const DesktopLayout = async ({ barbershop }: MobileLayoutProps) => {
                 key={service.id}
                 barbershop={barbershop}
                 service={service}
-                isAuthenticated={session?.status === "authenticated"}
+                isAuthenticated={!!session?.user}
               />
             ))}
           </div>

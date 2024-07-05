@@ -208,6 +208,7 @@ const ServiceItem = ({
                       locale={ptBR}
                       fromDate={new Date()}
                       disabled={isDayClosed}
+                      className="w-full"
                       styles={{
                         head_cell: {
                           width: "100%",
@@ -229,6 +230,9 @@ const ServiceItem = ({
                         },
                         caption: {
                           textTransform: "capitalize",
+                        },
+                        caption_start: {
+                          width: "100%",
                         },
                       }}
                     />
@@ -270,6 +274,7 @@ const ServiceItem = ({
                     <Button
                       onClick={handleBookingSubmit}
                       disabled={!hour || !date || submitIsLoading}
+                      className="w-full"
                     >
                       {submitIsLoading && (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
