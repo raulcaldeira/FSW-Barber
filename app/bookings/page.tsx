@@ -44,7 +44,7 @@ const BookingsPage = async () => {
     <>
       <Header />
 
-      <div className="px-5 py-6">
+      <div className="px-5 md:px-32 lg:px-64 py-6">
         <h1 className="text-xl font-bold mb-6">Agendamentos</h1>
 
         {confirmedBookings.length < 1 && endedBookings.length < 1 && (
