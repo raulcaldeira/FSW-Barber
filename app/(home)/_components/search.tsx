@@ -27,9 +27,10 @@ const formSchema = z.object({
 
 interface SearchProps {
   defaultValues?: z.infer<typeof formSchema>;
+  className?: string;
 }
 
-const Search = ({ defaultValues }: SearchProps) => {
+const Search = ({ defaultValues, className }: SearchProps) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,7 +43,7 @@ const Search = ({ defaultValues }: SearchProps) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className={`flex items-center gap-2 ${className}`}>
       <Form {...form}>
         <form
           className="flex w-full gap-4"

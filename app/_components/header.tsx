@@ -15,9 +15,14 @@ import clsx from "clsx";
 interface HeaderProps {
   className?: string;
   searchIsShown?: boolean;
+  searchValue?: string;
 }
 
-const Header = ({ className, searchIsShown = true }: HeaderProps) => {
+const Header = ({
+  className,
+  searchIsShown = true,
+  searchValue,
+}: HeaderProps) => {
   const { data } = useSession();
   const router = useRouter();
   const currentRoute = usePathname();
@@ -46,7 +51,11 @@ const Header = ({ className, searchIsShown = true }: HeaderProps) => {
 
           {searchIsShown && (
             <div className="hidden lg:block flex-1 max-w-[935px]">
-              <Search />
+              <Search
+                defaultValues={{
+                  search: searchValue ? searchValue : "",
+                }}
+              />
             </div>
           )}
 
