@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Capa](https://github.com/user-attachments/assets/c3262588-2648-4371-89b8-a170475f01b6)
 
-## Getting Started
 
-First, run the development server:
+# FSW Barber ✂️💈
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Este é um aplicativo para agendamentos em barbearias, desenvolvido com o objetivo de facilitar a reserva de horários tanto para clientes quanto para barbearias. Com uma interface intuitiva e recursos eficientes, o aplicativo busca proporcionar uma experiência prática e organizada.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Protótipo da Aplicação
+[Protótipo no Figma](https://www.figma.com/design/jMzRq8rks94mr4pKyicwCK/FSW-Barber?node-id=1-8&t=td9GCPUg1YEHWDQf-0)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## ⚒️ Tecnologias Utilizadas
 
-To learn more about Next.js, take a look at the following resources:
+    🔴 Typescript
+    🔴 Next.js
+    🔴 Tailwind CSS
+    🔴 Shadcn
+    🔴 Prisma 
+    🔴 Supabase
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🆘 Como Executar o Projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Pré-requisitos
 
-## Deploy on Vercel
+- Node.js e npm instalados
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Passos para execução
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Clone o repositório:
+    ```bash
+    git clone https://github.com/raul-santana/api-find-a-friend](https://github.com/raulcaldeira/FSW-Barber
+    ```
+2. Navegue até o diretório do projeto:
+    ```bash
+    cd FSW-Barber
+    ```
+3. Configure as Variáveis de Ambiente
+
+    - Crie um arquivo .env na raiz do projeto e configure as variáveis necessárias, como a conexão com o Supabase, NEXT_AUTH_SECRET, GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET.
+
+4. Execute o projeto:
+    ```bash
+    npm run dev
+    ```
+
+5. Acesse o App:
+
+- Abra seu navegador e acesse http://localhost:3000.
+
+## 🚀 Contribuições
+
+Contribuições são bem-vindas! Por favor, siga os passos abaixo para contribuir:
+
+1. Faça um fork do projeto.
+2. Crie uma nova branch: `git checkout -b minha-nova-funcionalidade`.
+3. Faça as alterações desejadas e adicione testes quando necessário.
+4. Commit suas mudanças: `git commit -m 'Adiciona nova funcionalidade'`.
+5. Faça o push para a branch: `git push origin minha-nova-funcionalidade`.
+6. Envie um pull request.
